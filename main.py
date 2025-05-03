@@ -14,7 +14,7 @@ def go(message):
         bot.send_photo(message.chat.id, pokemon.show_img())
     
     else:
-        bot.reply_to(message, "Ты уже создал себе покемона")
+        bot.reply_to(message, "Ты уже создал себе покемона")        
 
 
 @bot.message_handler(commands=['attack'])
@@ -51,6 +51,20 @@ def info(message):
             result += f"{value}: {text[value]}\n"
 
         bot.send_message(message.chat.id, result)
+    else:
+        bot.send_message(message.chat.id, "Создайте покемона, с помощью /go")
+
+
+@bot.message_handler(commands=['feed'])
+def info(message):
+    user = message.from_user.username
+
+    if user in Pokemon.pokemons:
+        pokemon:Pokemon = Pokemon.pokemons[user]
+
+        feed_pokemon = pokemon.feed()
+
+        bot.send_message(message.chat.id, feed_pokemon)
     else:
         bot.send_message(message.chat.id, "Создайте покемона, с помощью /go")
         

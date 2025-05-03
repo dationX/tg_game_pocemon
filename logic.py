@@ -1,5 +1,6 @@
 from random import randint
 import requests
+import datetime
 
 class Pokemon:
     pokemons = {}
@@ -14,6 +15,7 @@ class Pokemon:
         self.power = randint(1, 5)
         self.hp = randint(10, 20)
         self.song = self.get_song()
+        self.last_feed_time = datetime.datetime.now()
 
         Pokemon.pokemons[pokemon_trainer] = self
 
@@ -74,6 +76,16 @@ class Pokemon:
                 return "Вы победили!"
         else:
             return "Ваш покемон мертв"
+        
+    def feed(self, feed_interval = 20, hp_increase = 10):
+        current_time = datetime.datetime.now()
+        delta_time = datetime.timedelta(seconds=feed_interval)
+        if (current_time - self.last_feed_time) > delta_time:
+            self.hp += hp_increase
+            self.last_feed_time = current_time
+            return f"Здоровье покемона увеличено. Текущее здоровье: {self.hp}"
+        else:
+            return f"Следующее время кормления покемона: {self.last_feed_time+delta_time}"
         
     
         
